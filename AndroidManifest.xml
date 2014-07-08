@@ -146,11 +146,17 @@
             android:name="baidumapsdk.demo.CloudSearchDemo"
             android:label="@string/title_activity_cloud_search_demo" >
         </activity>
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" >
         </service>
+
+        <activity
+            android:name="baidumapsdk.demo.cons.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />

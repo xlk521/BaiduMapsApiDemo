@@ -72,5 +72,10 @@
     <string name="title_activity_panorama_poi_selector">通过POI进入全景图</string>
     <string name="title_activity_panorama_geo_selector">通过地理坐标进入全景图</string>
     <string name="title_activity_panorama_demo">全景图功能</string>
+    <string name="fresh">刷新</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="login">login</string>
 
 </resources>

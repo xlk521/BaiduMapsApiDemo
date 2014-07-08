@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import baidumapsdk.demo.cons.LoginActivity;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.VersionInfo;
@@ -107,7 +108,9 @@ public class BMapApiDemoMain extends Activity {
 			new DemoInfo(R.string.demo_title_cloud, R.string.demo_desc_cloud,
 					CloudSearchDemo.class),
 			new DemoInfo(R.string.demo_title_navi, R.string.demo_desc_navi,
-					NaviDemo.class)
+					NaviDemo.class),
+			new DemoInfo(R.string.login, R.string.login,
+					LoginActivity.class)
 	};
 
 	@Override

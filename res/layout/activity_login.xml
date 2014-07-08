@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_login">
+    <!-- padding 内边距   layout_margin 外边距
+  		android:layout_alignParentTop 布局的位置是否处于顶部 -->
+  	
+  	<LinearLayout
+  	    android:layout_width="match_parent"
+  	    android:layout_height="wrap_content"
+  	    android:orientation="vertical"
+  		android:padding="15dip"        
+    	android:layout_margin="15dip"
+    	android:background="@drawable/background_login_div" >
+	  	<LinearLayout
+	  	    android:layout_width="match_parent"
+	  	    android:layout_height="fill_parent"
+  	    	android:orientation="horizontal" >
+	  		<!-- 账号 -->
+
+	    	<TextView
+	    	    android:id="@+id/login_user_input"
+	    	    android:layout_width="0dip"
+	    	    android:layout_height="fill_parent"
+	    	    android:layout_marginTop="5dp"
+	    	    android:layout_weight="2"
+	    	    android:background="@drawable/tit"
+	    	    android:text="username" />
+
+	    	<EditText
+	    	    android:id="@+id/username_edit"
+	    	    android:layout_width="0dip"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_weight="7"
+	    	    android:hint="hint"
+	    	    android:inputType="text"
+	    	    android:singleLine="true" />
+
+	  	</LinearLayout>
+	  	<LinearLayout
+	  	    android:layout_width="match_parent"
+	  	    android:layout_height="fill_parent"
+  	    	android:orientation="horizontal" >
+	  		<!-- 账号 -->
+	    	<TextView
+	    		android:id="@+id/login_user_input"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="fill_parent"
+	    		android:layout_marginTop="5dp"
+	    		android:text="username"
+	    		android:background="#a2a2a2" />
+	    	<EditText
+	    	    android:id="@+id/username_edit"
+	    	    android:layout_width="fill_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:hint="hint"
+	    	    android:inputType="text"
+	    	    android:singleLine="true" />
+	  	</LinearLayout>
+	  	<LinearLayout
+	  	    android:layout_width="match_parent"
+	  	    android:layout_height="fill_parent"
+  	    	android:orientation="horizontal" >
+	  		<!-- 账号 -->
+	    	<TextView
+	    		android:id="@+id/login_user_input"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="fill_parent"
+	    		android:layout_marginTop="5dp"
+	    		android:text="username"
+	    		android:background="#a2a2a2" />
+	    	<EditText
+	    	    android:id="@+id/username_edit"
+	    	    android:layout_width="fill_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:hint="hint"
+	    	    android:inputType="text"
+	    	    android:singleLine="true" />
+	  	</LinearLayout>
+  	</LinearLayout>
+  	<RelativeLayout 
+  	    android:id="@+id/login_div"
+  	    android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		android:padding="15dip"        
+    	android:layout_margin="15dip" 
+    	android:background="@drawable/background_login_div" >
+  		<!-- 账号 -->
+    	<TextView 
+    		android:id="@+id/login_user_input"
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_alignParentTop="true"
+    		android:layout_marginTop="5dp"
+    		android:text="username" />
+    	<EditText 
+    		android:id="@+id/username_edit"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:hint="hint"
+    		android:layout_below="@id/login_user_input"
+    		android:singleLine="true"
+    		android:inputType="text"/>
+      <!-- 密码 text -->
+      <TextView 
+      	android:id="@+id/login_password_input"
+      	android:layout_width="wrap_content"
+      	android:layout_height="wrap_content"
+      	android:layout_below="@id/username_edit"
+      	android:layout_marginTop="3dp"
+      	android:text="password"/>
+      <EditText 
+      	android:id="@+id/password_edit"
+      	android:layout_width="fill_parent"
+      	android:layout_height="wrap_content"
+      	android:layout_below="@id/login_password_input"
+      	android:password="true"
+      	android:singleLine="true"
+      	android:inputType="textPassword" />
+      <!-- 登录button -->
+      <Button 
+      	android:id="@+id/signin_button"
+      	android:layout_width="wrap_content"
+      	android:layout_height="wrap_content"
+      	android:layout_below="@id/password_edit"
+      	android:layout_alignRight="@id/password_edit"
+      	android:text="signin"
+      	android:background="@drawable/button_on" />
+  	</RelativeLayout>
+
+</LinearLayout>
