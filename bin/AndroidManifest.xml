@@ -157,6 +157,18 @@
             android:name="baidumapsdk.demo.cons.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
+        <activity
+            android:name="baidumapsdk.demo.cons.BaseActivity"
+            android:label="@string/title_activity_base" >
+        </activity>
+        <activity
+            android:name="baidumapsdk.demo.cons.WelcomeActivity"
+            android:label="@string/title_activity_welcome" >
+        </activity>
+        <activity
+            android:name="baidumapsdk.demo.cons.MainLeaderActivity"
+            android:label="@string/title_activity_main_leader" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />

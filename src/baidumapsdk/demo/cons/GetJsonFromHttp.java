@@ -18,13 +18,13 @@ public class GetJsonFromHttp {
 	 * */
 	public String getJsonByHttpForMap(final String train, final String wds, final String wde, final String md, final String mdi) {
 		if (Tools.isMobileConnected(context) || Tools.isWIFIConnected(context)) {
-			SharedPreferences preference1 = context.getSharedPreferences(Key.sharePerferceStr, 0);
+			SharedPreferences preference1 = context.getSharedPreferences(Constant.sharePerferceStr, 0);
 			String bureauCode = preference1.getString(Key.bureau, null);
 			String deptCode = preference1.getString(Key.dept, null);
-//			if (bureauCode == null || deptCode == null || bureauCode.equals(Constant.bureauCode) || deptCode.equals(Constant.deptCode)) {
-//				//表示没有获取到正确信息，需要退出重新登录
-//				return Constant.loginOut;
-//			}
+			if (bureauCode == null || deptCode == null || bureauCode.equals(Constant.bureauCode) || deptCode.equals(Constant.deptCode)) {
+				//表示没有获取到正确信息，需要退出重新登录
+				return Constant.loginOut;
+			}
 			JSONObject jsonObject = new JSONObject();
 			try {
 				jsonObject.put(Key.bureau, bureauCode);
@@ -36,6 +36,34 @@ public class GetJsonFromHttp {
 				jsonObject.put(Key.mdi, mdi);
 				//获取服务器地址
 				String url = Constant.APK_CHECK;
+				//连接服务器并获取反馈的信息
+				String result = TKYHttpClient.connect(url, jsonObject.toString());
+				if (result == null || (result != null && result.equals(""))) {
+					return null;
+				}
+				return result;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return Constant.jsonObjectErr;
+			}
+		} else {
+			return Constant.postResult_noIp;
+		}
+	}
+	/*DerekXie 20140709
+	 * 领导登录
+	 * */
+	public String getJsonByHttpForLogin(String UserName, String Password, String DuanMa, String Phone) {
+		if (Tools.isMobileConnected(context) || Tools.isWIFIConnected(context)) {
+			JSONObject jsonObject = new JSONObject();
+			try {
+				jsonObject.put(Key.flag, Key.flag_login);
+				jsonObject.put(Key.my_device, Phone);
+				jsonObject.put(Key.DeptCode, DuanMa);
+				jsonObject.put(Key.user_id, UserName);
+				jsonObject.put(Key.password, Password);
+				//获取服务器地址
+				String url = Constant.LeaderLogin;
 				//连接服务器并获取反馈的信息
 				String result = TKYHttpClient.connect(url, jsonObject.toString());
 				if (result == null || (result != null && result.equals(""))) {

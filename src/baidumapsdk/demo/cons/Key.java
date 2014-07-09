@@ -2,9 +2,9 @@ package baidumapsdk.demo.cons;
 
 public class Key {
 
-	public static final String sharePerferceStr = "sharePerferceStr";
 	//领导登录请求flag_login
 	public static final String flag = "flag";
+	public static final String flag_login = "flag_login";
 	public static final String my_device = "my_device";//设备号
 	public static final String DeptCode = "DeptCode";//所属客运段段码
 	public static final String user_id = "user_id";//当前用户ID
@@ -12,7 +12,7 @@ public class Key {
 	//领导登录响应
 	public static final String result = "result";//0000：成功 其他：失败
 	public static final String error = "error";//错误事由
-
+	public static final String resultOk = "0000";
 
 	//向服务端发送领导查看地图请求
 	public static final String bureau = "bureau";//局码
