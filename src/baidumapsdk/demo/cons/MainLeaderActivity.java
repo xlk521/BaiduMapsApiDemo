@@ -5,6 +5,7 @@ import baidumapsdk.demo.BMapApiDemoMain;
 import baidumapsdk.demo.OverlayDemo;
 import baidumapsdk.demo.R;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
@@ -15,7 +16,10 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
@@ -29,7 +33,7 @@ public class MainLeaderActivity extends BaseActivity {
 
 	public static MainLeaderActivity instance = null;
 	private LocalActivityManager manager = null;
-	private ViewPager mTabPager;
+	private MyViewPager mTabPager;
 	private ImageView mTabImg;// 动画图片
 	private ImageView mTab1,mTab2,mTab3,mTab4;
 	private int zero = 0;// 动画图片偏移量
@@ -43,9 +47,11 @@ public class MainLeaderActivity extends BaseActivity {
 	private boolean menu_display = false;
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
+	private  PagerAdapter mPagerAdapter = null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main_leader);
 		
 		 //启动activity时不自动弹出软键盘
@@ -63,9 +69,9 @@ public class MainLeaderActivity extends BaseActivity {
         manager = new LocalActivityManager(this , true);
         manager.dispatchCreate(savedInstanceState);
         
-        mTabPager = (ViewPager)findViewById(R.id.tabpager);
+        mTabPager = (MyViewPager)findViewById(R.id.tabpager);
         mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
-        
+
         mTab1 = (ImageView) findViewById(R.id.img_weixin);
         mTab2 = (ImageView) findViewById(R.id.img_address);
         mTab3 = (ImageView) findViewById(R.id.img_friends);
@@ -85,19 +91,60 @@ public class MainLeaderActivity extends BaseActivity {
         
         //InitImageView();//使用动画
         
-        
-      //每个页面的view数据
+        setPageAdapter();
+//      //每个页面的view数据
+//        final ArrayList<View> views = new ArrayList<View>();
+//        Intent intent1 = new Intent(this, OverlayDemo.class);
+//        views.add(getView("A", intent1));
+//        Intent intent2 = new Intent(this, WelcomeActivity.class);
+//        views.add(getView("B", intent2));
+//        Intent intent3 = new Intent(this, WelcomeActivity.class);
+//        views.add(getView("C", intent3));
+//        Intent intent4 = new Intent(this, BMapApiDemoMain.class);
+//        views.add(getView("D", intent4));
+//      //填充ViewPager的数据适配器
+//        mPagerAdapter = new PagerAdapter() {
+//			
+//			@Override
+//			public boolean isViewFromObject(View arg0, Object arg1) {
+//				return arg0 == arg1;
+//			}
+//			
+//			@Override
+//			public int getCount() {
+//				return views.size();
+//			}
+//
+//			@Override
+//			public void destroyItem(View container, int position, Object object) {
+//				((ViewPager)container).removeView(views.get(position));
+//			}
+//			
+//			@Override
+//			public Object instantiateItem(View container, int position) {
+//				ViewPager pViewPager = ((ViewPager) container);
+//	            pViewPager.addView(views.get(position));
+//	            return views.get(position);
+//			}
+//		};
+//		
+//		mTabPager.setAdapter(mPagerAdapter);
+	}
+	private void setPageAdapter() {
+		//设置预加载的个数，由于有4个tag，所以设置为3，可以防止地图被销毁
+		mTabPager.setOffscreenPageLimit(3);
+		  //每个页面的view数据
         final ArrayList<View> views = new ArrayList<View>();
         Intent intent1 = new Intent(this, OverlayDemo.class);
         views.add(getView("A", intent1));
-        Intent intent2 = new Intent(this, LoginActivity.class);
+        Intent intent2 = new Intent(this, WelcomeActivity.class);
         views.add(getView("B", intent2));
         Intent intent3 = new Intent(this, WelcomeActivity.class);
         views.add(getView("C", intent3));
         Intent intent4 = new Intent(this, BMapApiDemoMain.class);
         views.add(getView("D", intent4));
       //填充ViewPager的数据适配器
-        PagerAdapter mPagerAdapter = new PagerAdapter() {
+        mPagerAdapter = new PagerAdapter() {
 			
 			@Override
 			public boolean isViewFromObject(View arg0, Object arg1) {
@@ -120,9 +167,27 @@ public class MainLeaderActivity extends BaseActivity {
 	            pViewPager.addView(views.get(position));
 	            return views.get(position);
 			}
+			@Override  
+			public int getItemPosition(Object object) {  
+				return POSITION_NONE;  
+		    }
+			@Override    
+	       public void finishUpdate(View arg0) {}    
+	           
+	       @Override  
+	       public void restoreState(android.os.Parcelable state, ClassLoader loader) {  
+	          
+	       }
+	       @Override    
+	       public void startUpdate(View arg0) {}
+			@Override    
+	       public Parcelable saveState() {    
+	           return null;    
+	       }
 		};
 		
 		mTabPager.setAdapter(mPagerAdapter);
+		
 	}
 	/**
      * 通过activity获取视图
@@ -146,7 +211,6 @@ public class MainLeaderActivity extends BaseActivity {
 		@Override
 		public void onClick(View v) {
 			mTabPager.setCurrentItem(index);
-//			mTabPager.
 		}
 	};
 	
@@ -232,19 +296,15 @@ public class MainLeaderActivity extends BaseActivity {
 	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
     	if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {  //获取 back键
-    		
         	if(menu_display){         //如果 Menu已经打开 ，先关闭Menu
         		menuWindow.dismiss();
         		menu_display = false;
-        		}
-        	else {
-//        		Intent intent = new Intent();
-//            	intent.setClass(MainLeaderActivity.this,ExitActivity.class);
-//            	startActivity(intent);
+        	}else {
+        		Intent intent = new Intent();
+            	intent.setClass(MainLeaderActivity.this,ExitActivity.class);
+            	startActivity(intent);
         	}
-    	}
-    	
-    	else if(keyCode == KeyEvent.KEYCODE_MENU){   //获取 Menu键			
+    	}else if(keyCode == KeyEvent.KEYCODE_MENU){   //获取 Menu键			
 			if(!menu_display){
 				//获取LayoutInflater实例
 				inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -254,13 +314,12 @@ public class MainLeaderActivity extends BaseActivity {
 				
 				//下面我们要考虑了，我怎样将我的layout加入到PopupWindow中呢？？？很简单
 				menuWindow = new PopupWindow(layout,LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT); //后两个参数是width和height
-				//menuWindow.showAsDropDown(layout); //设置弹出效果
-				//menuWindow.showAsDropDown(null, 0, layout.getHeight());
+//				menuWindow.showAsDropDown(layout); //设置弹出效果
+//				menuWindow.showAsDropDown(null, 0, layout.getHeight());
 				menuWindow.showAtLocation(this.findViewById(R.id.mainweixin), Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
 				//如何获取我们main中的控件呢？也很简单
 				mClose = (LinearLayout)layout.findViewById(R.id.menu_close);
 				mCloseBtn = (LinearLayout)layout.findViewById(R.id.menu_close_btn);
-				
 				
 				//下面对每一个Layout进行单击事件的注册吧。。。
 				//比如单击某个MenuItem的时候，他的背景色改变
@@ -269,9 +328,9 @@ public class MainLeaderActivity extends BaseActivity {
 					@Override
 					public void onClick(View arg0) {					
 						//Toast.makeText(Main.this, "退出", Toast.LENGTH_LONG).show();
-//						Intent intent = new Intent();
-//			        	intent.setClass(MainLeaderActivity.this,ExitActivity.class);
-//			        	startActivity(intent);
+						Intent intent = new Intent();
+			        	intent.setClass(MainLeaderActivity.this,ExitActivity.class);
+			        	startActivity(intent);
 			        	menuWindow.dismiss(); //响应点击事件之后关闭Menu
 					}
 				});				
@@ -280,18 +339,11 @@ public class MainLeaderActivity extends BaseActivity {
 				//如果当前已经为显示状态，则隐藏起来
 				menuWindow.dismiss();
 				menu_display = false;
-				}
-			
+			}
 			return false;
 		}
     	return false;
     }
-	//设置标题栏右侧按钮的作用
-	public void btnmainright(View v) {
-//		Intent intent = new Intent (MainLeaderActivity.this,MainTopRightDialogActivity.class);
-//		startActivity(intent);
-		Toast.makeText(getApplicationContext(), "点击了功能按钮", Toast.LENGTH_LONG).show();
-      }  	
 	public void startchat(View v) {      //小黑  对话界面
 //		Intent intent = new Intent (MainLeaderActivity.this,ChatActivity.class);
 //		startActivity(intent);

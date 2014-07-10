@@ -25,6 +25,8 @@ public class Constant {
 	public static final int Null_Duan = 404;
 	public static final int loginSuccess = 100;
 	public static final int loginFail = 500;
+	//定时刷新
+    public static int isFresh = 0;
 	
 	public final static String DEPTSTR = "[{\"DeptName\":\"哈尔滨客运段\",\"DeptCode\":\"HBB\",\"BureauCode\":\"HEB\"}," +
 			"{\"DeptName\":\"齐齐哈尔客运段\",\"DeptCode\":\"QHX\",\"BureauCode\":\"HEB\"}," +

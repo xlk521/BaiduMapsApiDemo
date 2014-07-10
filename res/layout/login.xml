@@ -5,7 +5,7 @@
     android:background="#eee"
     android:orientation="vertical" 
     android:gravity="center_horizontal">
-    <RelativeLayout 
+    <RelativeLayout
         android:id="@+id/login_top_layout"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
@@ -28,8 +28,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#ffffff"
-            android:text="登录"
-           />
+            android:text="登录" />
         
     </RelativeLayout>
 	<EditText 

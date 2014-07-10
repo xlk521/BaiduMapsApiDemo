@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Toast;
 
 public class BaseActivity extends Activity {
@@ -43,4 +45,29 @@ public class BaseActivity extends Activity {
 			}
 		}
 	};
+
+	//设置标题栏右侧按钮的作用
+	public void btnmainright(View v) {
+		Intent intent = new Intent (getApplicationContext(),MainTopRightDialogActivity.class);
+		startActivity(intent);
+	}  	
+	public void login_back(View v) {     //标题栏 返回按钮
+      	this.finish();
+    }
+	public void timeFresh(View v){
+		String freshStr = "";
+		if (Constant.isFresh == 1) {
+			Constant.isFresh = 0;
+			freshStr = "停止刷新";
+		}else{
+			Constant.isFresh = 1;
+			freshStr = "开启刷新（每分钟）";
+		}
+		Toast.makeText(getApplicationContext(), freshStr, Toast.LENGTH_SHORT).show();
+		finish();
+	}
+	public void forWeb(View v){
+		Toast.makeText(getApplicationContext(), "正在研发，敬请期待", Toast.LENGTH_SHORT).show();
+		finish();
+	}
 }

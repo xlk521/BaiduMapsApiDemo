@@ -169,6 +169,16 @@
             android:name="baidumapsdk.demo.cons.MainLeaderActivity"
             android:label="@string/title_activity_main_leader" >
         </activity>
+        <activity
+            android:name="baidumapsdk.demo.cons.ExitActivity"
+            android:label="@string/title_activity_exit"
+            android:theme="@style/MyDialogStyle" >
+        </activity>
+        <activity
+            android:name="baidumapsdk.demo.cons.MainTopRightDialogActivity"
+            android:label="@string/title_activity_main_top_right_dialog"
+            android:theme="@style/MyDialogStyleTop" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />

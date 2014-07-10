@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
+import baidumapsdk.demo.cons.BaseActivity;
 import baidumapsdk.demo.cons.Constant;
 import baidumapsdk.demo.cons.GetJsonFromHttp;
 import baidumapsdk.demo.cons.Key;
@@ -44,7 +46,7 @@ import com.baidu.mapapi.model.LatLngBounds;
 /**
  * 演示覆盖物的用法
  */
-public class OverlayDemo extends Activity {
+public class OverlayDemo extends BaseActivity {
 
 	/**
 	 * MapView 是地图主控件
@@ -54,68 +56,104 @@ public class OverlayDemo extends Activity {
 	private Marker mMarkerD = null;
 	private ArrayList<View> ViewList = null;
 	private InfoWindow mInfoWindow;
-	private Button freshBtn = null;
 	private GetJsonFromHttp getJsonFromHttp = null;
 	private String tag = "OverlayDemo";
 	private JSONArray jsonArray = null;
 	private View view = null;
 	private TextView checiView = null;
 	private TextView dandangju1View = null;
-	private TextView dandangju2View = null;
-	private TextView dandangju3View = null;
+//	private TextView dandangju2View = null;
+//	private TextView dandangju3View = null;
 	private TextView shifaView = null;
 	private TextView chezhangView = null;
 	private TextView bianzuView = null;
 	private TextView dingyuanView = null;
-	private TextView renshu1View = null;
-	private TextView renshu2View = null;
 	private TextView yunxing1View = null;
-	private TextView yunxing2View = null;
 	private TextView yunxing3View = null;
 	private TextView dingweishijianView = null;
+	private Handler handler = null;
+    private Runnable runnable = null;
+    private Handler handlerBool = null;
+    private Runnable runnableBool = null;
+    private int isFreshNow = 0;
 	// 初始化全局 bitmap 信息，不用时及时 recycle
-	BitmapDescriptor bdD = BitmapDescriptorFactory.fromResource(R.drawable.icon_markd);
-	BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding);
-	BitmapDescriptor bdGround = BitmapDescriptorFactory.fromResource(R.drawable.ground_overlay);
+    BitmapDescriptor bdD = BitmapDescriptorFactory.fromResource(R.drawable.icon_markd);
+    BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding);
+    BitmapDescriptor bdGround = BitmapDescriptorFactory.fromResource(R.drawable.ground_overlay);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_overlay);
+		
+		Log.i(tag, "mMapView.onCreate");
 		mMapView = (MapView) findViewById(R.id.bmapView);
-		freshBtn = (Button)this.findViewById(R.id.fresh);
-		checiView = (TextView)this.findViewById(R.id.checi);
-		view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.window, null);
-		checiView = (TextView)view.findViewById(R.id.checi);
-		dandangju1View = (TextView)view.findViewById(R.id.dandangju1);
-		dandangju2View = (TextView)view.findViewById(R.id.dandangju2);
-		dandangju3View = (TextView)view.findViewById(R.id.dandangju3);
-		shifaView = (TextView)view.findViewById(R.id.shifa);
-		chezhangView = (TextView)view.findViewById(R.id.chezhang);
-		bianzuView = (TextView)view.findViewById(R.id.bianzu);
-		dingyuanView = (TextView)view.findViewById(R.id.dingyuan);
-		renshu1View = (TextView)view.findViewById(R.id.renshu1);
-		renshu2View = (TextView)view.findViewById(R.id.renshu2);
-		yunxing1View = (TextView)view.findViewById(R.id.yunxing1);
-		yunxing2View = (TextView)view.findViewById(R.id.yunxing2);
-		yunxing3View = (TextView)view.findViewById(R.id.yunxing3);
-		dingweishijianView = (TextView)view.findViewById(R.id.dingweishijian);
+		
+//		view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.ditu, null);
+//		checiView = (TextView)view.findViewById(R.id.ditu_checi);
+//		dandangju1View = (TextView)view.findViewById(R.id.ditu_dandangju);
+//		shifaView = (TextView)view.findViewById(R.id.ditu_shifa);
+//		chezhangView = (TextView)view.findViewById(R.id.ditu_chezhang);
+//		bianzuView = (TextView)view.findViewById(R.id.ditu_bianzu);
+//		dingyuanView = (TextView)view.findViewById(R.id.ditu_dingyuan);
+//		yunxing1View = (TextView)view.findViewById(R.id.ditu_yunxing1);
+//		yunxing3View = (TextView)view.findViewById(R.id.ditu_yunxing3);
+//		dingweishijianView = (TextView)view.findViewById(R.id.ditu_dingweishijian);
 		getJsonFromHttp = new GetJsonFromHttp(getApplicationContext());
+		
 		mBaiduMap = mMapView.getMap();
 		MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(13.0f);//调节地图初始化时的显示缩放度
 		mBaiduMap.setMapStatus(msu);
+		initHandle();
+//		timeFresh();
 		initOverlay();
-		//设置刷新按钮的功能
-		freshBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//重新设定界面布局
-				resetOverlay(null);
-			}
-		});
+
+//		mMapView.onPause();
 	}
 
+	public void timeFresh(){
+		if(Constant.isFresh == 0){
+			//停止刷新
+			handler.removeCallbacks(runnable);
+		}else{
+			//开启刷新
+			handler.removeCallbacks(runnable);
+			handler.postDelayed(runnable,60000);
+		}	
+	}
+	private void initHandle(){
+		Constant.isFresh = 0;
+		/*
+	     * 开启或者关闭数据刷新
+	     * */
+		handler = new Handler();
+	    runnable = new Runnable() {
+		    public void run () {
+		    	Log.i(tag, "tag");
+		    	resetOverlay(null);
+		    	timeFresh();
+		    }
+	    };
+	    /*
+	     * 检测是否按下刷新按钮
+	     * */
+	    handlerBool = new Handler();
+	    runnableBool = new Runnable() {
+		    public void run () {
+		    	Log.i(tag, "tagBool");
+		    	if (isFreshNow != Constant.isFresh) {
+		    		isFreshNow = Constant.isFresh;
+		    		timeFresh();
+		    		handlerBool.postDelayed(this,2000);
+				}else{
+			    	handlerBool.postDelayed(this,2000);
+				}
+		    }
+	    };
+		handlerBool.postDelayed(runnableBool,2000);
+	}
 	public void initOverlay() {
+
 		//开启线程，用于更新数据
 		new Thread(new Runnable() {
 			@Override
@@ -145,6 +183,18 @@ public class OverlayDemo extends Activity {
 								OverlayOptions ooText = null;
 								ViewList = new ArrayList<View>();
 								for (int i = 0; i < jsonArray.length(); i++) {
+									
+									view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.ditu, null);
+									checiView = (TextView)view.findViewById(R.id.ditu_checi);
+									dandangju1View = (TextView)view.findViewById(R.id.ditu_dandangju);
+									shifaView = (TextView)view.findViewById(R.id.ditu_shifa);
+									chezhangView = (TextView)view.findViewById(R.id.ditu_chezhang);
+									bianzuView = (TextView)view.findViewById(R.id.ditu_bianzu);
+									dingyuanView = (TextView)view.findViewById(R.id.ditu_dingyuan);
+									yunxing1View = (TextView)view.findViewById(R.id.ditu_yunxing1);
+									yunxing3View = (TextView)view.findViewById(R.id.ditu_yunxing3);
+									dingweishijianView = (TextView)view.findViewById(R.id.ditu_dingweishijian);
+									
 									JSONObject obj = jsonArray.getJSONObject(i);
 //									String zttype = obj.getString(Key.);
 									String zttime = obj.getString(Key.zttime);
@@ -182,23 +232,23 @@ public class OverlayDemo extends Activity {
 									mMarkerD = (Marker)mBaiduMap.addOverlay(ooD);
 									mMarkerD.setTitle(""+i);
 									//添加文字
-									ooText = new TextOptions().bgColor(0xAAFFFF00).fontSize(24).fontColor(0xFFFF00FF).text(ztcheci).rotate(0).position(llD2);
+									ooText = new TextOptions().bgColor(0xAAFFFF33).fontSize(24).fontColor(0xFFFF00FF).text(ztcheci).rotate(0).position(llD2);
 									mBaiduMap.addOverlay(ooText);
 
 									checiView.setText(ztcheci+"("+TrainDirection+")");
-									dandangju1View.setText(BureauName);
-									dandangju2View.setText(DeptName);
-									dandangju3View.setText(TeamName+" "+banzu);
+									dandangju1View.setText(BureauName+" "+DeptName+" "+TeamName+" "+banzu);
+//									dandangju2View.setText(DeptName);
+//									dandangju3View.setText(TeamName+" "+banzu);
 									shifaView.setText(shifa+"始发");
 									chezhangView.setText("列车长:"+pos00+"("+zttel+")");
-									bianzuView.setText("编组:"+BianZu);
-									dingyuanView.setText("全列定员:"+peoplecount);
-									renshu1View.setText("车内人数:共计"+peoplecount);
-									renshu2View.setText("CA:22人 RW:44人 YW：333人 YZ:999人");
-									yunxing1View.setText(XiaZhan);
-									yunxing2View.setText("区间（站间距23公里），距离前方站济南23.5公里");
+									bianzuView.setText(BianZu);
+									dingyuanView.setText(peoplecount);
+//									renshu1View.setText("车内人数:共计"+peoplecount);
+//									renshu2View.setText("CA:22人 RW:44人 YW：333人 YZ:999人");
+									yunxing1View.setText("目前列车运行在公兴-双流区间(站间距10公里)目前列车运行在公兴-双流区间(站间距10公里),");
+//									yunxing2View.setText("区间（站间距23公里），距离前方站济南23.5公里");
 									yunxing3View.setText(pos1);
-									dingweishijianView = (TextView)view.findViewById(R.id.dingweishijian);
+									dingweishijianView.setText("定位时间："+zttime);
 									ViewList.add(view);
 								}
 								if (ViewList != null && ViewList.size() > 0) {
@@ -206,11 +256,12 @@ public class OverlayDemo extends Activity {
 									mBaiduMap.setOnMarkerClickListener(new OnMarkerClickListener() {
 										public boolean onMarkerClick(final Marker marker) {
 											String title = marker.getTitle();
+											Log.e("title", title);
 											if (title != null && !title.equals("")) {
 												try {
 													int titInt = Integer.parseInt(title);
 													//DerekXie 20140704:调取外部view的方式
-													View view = null;//LayoutInflater.from(getApplicationContext()).inflate(R.layout.window, null);
+													View view = null;//LayoutInflater.from(getApplicationContext()).inflate(R.layout.ditu, null);
 													view = ViewList.get(titInt);
 													final LatLng ll = marker.getPosition();
 													Point p = mBaiduMap.getProjection().toScreenLocation(ll);
@@ -313,6 +364,8 @@ public class OverlayDemo extends Activity {
 	@Override
 	protected void onPause() {
 		// MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
+
+    	Log.i(tag, "mMapView. onPause()");
 		mMapView.onPause();
 		super.onPause();
 	}
@@ -320,6 +373,8 @@ public class OverlayDemo extends Activity {
 	@Override
 	protected void onResume() {
 		// MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
+
+    	Log.i(tag, "mMapView.onResume();");
 		mMapView.onResume();
 		super.onResume();
 	}

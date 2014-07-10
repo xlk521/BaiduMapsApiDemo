@@ -48,9 +48,9 @@
                 <TextView
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="微信"
+            		android:text="地图"
             		android:textColor="#fff"
-            		android:textSize="12sp" />                
+            		android:textSize="12sp" />              
         	 </LinearLayout>
         	 <LinearLayout
             	android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                 <TextView
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="通讯录"
+            		android:text="通讯"
             		android:textColor="#fff"
             		android:textSize="12sp" />                
         	 </LinearLayout>
@@ -88,7 +88,7 @@
                 <TextView
             		android:layout_width="wrap_content"
             		android:layout_height="wrap_content"
-            		android:text="朋友们"
+            		android:text="速报"
             		android:textColor="#fff"
             		android:textSize="12sp" />                
         	 </LinearLayout>
@@ -124,11 +124,11 @@
     	android:layout_above="@id/main_bottom"       
         android:orientation="vertical" >
         
-        <android.support.v4.view.ViewPager
+        <baidumapsdk.demo.cons.MyViewPager
         	android:id="@+id/tabpager"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:layout_gravity="center" > 
-        </android.support.v4.view.ViewPager>  
+        </baidumapsdk.demo.cons.MyViewPager>  
     </LinearLayout>
 </RelativeLayout>

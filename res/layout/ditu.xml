@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="10.0dip"
+    android:background="@drawable/yuanjiao" >
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/ditu_checi"
+            style="@style/text_21_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="K186(乌鲁木齐→济南)"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:textColor="#FF0000"
+            android:ellipsize="none"
+			android:maxLines="100"
+			android:scrollHorizontally="false" />
+        <TextView
+            android:id="@+id/ditu_dandangju"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="济南铁路局  济南客运段 济乌车队 济乌八组"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/ditu_shifa"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="2014/07/04 21:09始发"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/ditu_chezhang"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:textColor="#FF0000"
+            android:text="列车长：赵玲（12345678901）"
+            android:visibility="visible" />
+         <TextView
+            android:id="@+id/ditu_bianzu"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="编组：XL:1 YW:7 YZ:3 CA:1 YW:234"
+            android:visibility="visible" />
+         <TextView
+            android:id="@+id/ditu_dingyuan"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="全列定员：1455，其中 CA:22人 RW:44人 YW：333人 YZ:999人车内人数：共计11212人"
+            android:visibility="visible" />
+         <TextView
+            android:id="@+id/ditu_yunxing1"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:ellipsize="none"
+			android:maxLines="100"
+            android:textColor="#FF0000"
+			android:scrollHorizontally="false"
+            android:text="目前列车运行在济南西-济南区间（站间距23公里），距离前方站济南23.5公里"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/ditu_yunxing3"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="该车次正点运行"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/ditu_dingweishijian"
+            style="@style/text_18_ffffff"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="定位时间：2014/07/04 10:33"
+            android:visibility="visible" />
+    </LinearLayout>
+</FrameLayout>

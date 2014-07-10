@@ -220,9 +220,6 @@ public class LoginActivity extends BaseActivity {
 			}
 		}
 	};
-	public void login_back(View v) {     //标题栏 返回按钮
-      	this.finish();
-    }
 	//forget password
 	public void login_pw(View v) {
       	Toast.makeText(getApplicationContext(), "请联系管理员", Toast.LENGTH_LONG).show();
